@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
-=======
 ﻿using System;
 using TicTacToe;
 
@@ -12,4 +8,3 @@ class Program {
         ticTacToe.Play();
     }
 }
->>>>>>> Stashed changes
