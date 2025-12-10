@@ -105,9 +105,11 @@ namespace TicTacToe {
         private void SwitchTurn() {
             turn = turn == Symbol.Circle ? Symbol.Cross : Symbol.Circle;
         }
+        
         private bool LineMatch(Symbol a, Symbol b, Symbol c) {
             return !a.Equals(Symbol.Empty) && a == b && b == c;
         }
+        
         private GameState GetGameState() {
 
             // Rows
