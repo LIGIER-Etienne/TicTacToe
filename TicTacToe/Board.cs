@@ -56,13 +56,9 @@
                 return Cells[0, 2].Equals(Symbol.Circle) ? GameState.CircleWins : GameState.CrossWins;
 
             // Draw check
-            bool full = true;
-            for(int i = 0; i < 3; i++)
-                for(int j = 0; j < 3; j++)
-                    if(Cells[i, j].Equals(Symbol.Empty))
-                        full = false;
+            if(GetEmptyCells().Count == 0) return GameState.Draw;
 
-            return full ? GameState.Draw : GameState.InProgress;
+            return GameState.InProgress;
         }
 
         internal bool PlayMove(short row, short col, Symbol symbol) {
@@ -89,6 +85,17 @@
             }
 
             return true;
+        }
+        internal List<short[]> GetEmptyCells() {
+            List<short[]> EmptyCells = new();
+
+            for(short i = 0; i < BOARD_SIZE; i++) {
+                for(short j = 0; j < BOARD_SIZE; j++) {
+                    if(Cells[i, j] == Symbol.Empty) EmptyCells.Add([i, j]);
+                }
+            }
+
+            return EmptyCells;
         }
     }
 }
