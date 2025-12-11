@@ -9,7 +9,7 @@
 
             Players = new Dictionary<Symbol, Player>() {
                 {Symbol.Circle , new HumanPlayer(Symbol.Circle)},
-                {Symbol.Cross , new HumanPlayer(Symbol.Cross)},
+                {Symbol.Cross , new BotPlayer(Board, Symbol.Cross)},
             };
 
             turn = Symbol.Circle;
