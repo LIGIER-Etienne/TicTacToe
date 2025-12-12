@@ -20,13 +20,13 @@ namespace TicTacToe.Players {
             }
         }
 
-        public override short[] GetNextMove() {
+        public override Task<short[]> GetNextMoveAsync() {
             Console.WriteLine("It's " + Symbol + "'s turn.");
 
             short row = ReadShort("Enter a row:");
             short col = ReadShort("Enter a col:");
 
-            return new[] { row, col };
+            return Task.FromResult(new[] { row, col });
         }
     }
 }

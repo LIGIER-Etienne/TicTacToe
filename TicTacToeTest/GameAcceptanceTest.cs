@@ -26,7 +26,7 @@ public class GameAcceptanceTest {
     new[] { "0", "2", "1", "0", "1", "1", "2", "1" },
     GameState.Draw)]
 
-    public void Play_Should_Return_Expected_State(IEnumerable<string> oInputs, IEnumerable<string> xInputs, GameState result) {
+    public async Task Play_Should_Return_Expected_State(IEnumerable<string> oInputs, IEnumerable<string> xInputs, GameState result) {
         IInputProvider circleInputProvider = new TestInputProvider(oInputs);
 
         IInputProvider crossInputProvider = new TestInputProvider(xInputs);
@@ -38,6 +38,6 @@ public class GameAcceptanceTest {
 
         Game game = new(Players);
 
-        Assert.Equal(result, game.Play());
+        Assert.Equal(result, await game.Play());
     }
 }

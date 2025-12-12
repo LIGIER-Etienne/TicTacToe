@@ -1,9 +1,10 @@
 ﻿using TicTacToe;
 
 class Program {
-    static void Main() {
+     static async Task Main() {
         while(true) {
-            new Game().Play();
+            // TODO : BotPlayer KO
+           await new Game().Play();
         }
-    }
+     }
 }

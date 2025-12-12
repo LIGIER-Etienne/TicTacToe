@@ -8,6 +8,6 @@ namespace TicTacToe.Players {
             Symbol = symbol;
         }
 
-        public abstract short[] GetNextMove();
+        public abstract Task<short[]> GetNextMoveAsync();
     }
 }
