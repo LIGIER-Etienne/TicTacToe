@@ -30,12 +30,12 @@ public class Game {
         turn = turn == Symbol.Circle ? Symbol.Cross : Symbol.Circle;
     }
 
-    public GameState Play() {
+    public async Task<GameState> Play() {
         Board.DisplayBoard();
 
         GameState gameState = Board.GetGameState();
         while(gameState == GameState.InProgress) {
-            short[] nextMove = Players[turn].GetNextMove();
+            short[] nextMove = await Players[turn].GetNextMoveAsync();
             if(!Board.PlayMove(nextMove[0], nextMove[1], Players[turn].Symbol)) {
                 continue;
             }
