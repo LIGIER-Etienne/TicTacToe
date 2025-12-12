@@ -2,8 +2,8 @@
 
 class Program {
     static void Main() {
-        Game ticTacToe = new();
-
-        ticTacToe.Play();
+        while(true) {
+            new Game().Play();
+        }
     }
 }

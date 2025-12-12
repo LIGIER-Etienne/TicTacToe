@@ -1,5 +1,5 @@
-﻿namespace TicTacToe {
-    internal enum GameState {
+﻿namespace TicTacToe.Enums {
+    public enum GameState {
         InProgress,
         CircleWins,
         CrossWins,

@@ -1,59 +1,64 @@
-﻿namespace TicTacToe {
-    internal class Game {
-        private Board Board;
-        private Dictionary<Symbol, Player> Players;
-        private Symbol turn;
+﻿using TicTacToe.Enums;
+using TicTacToe.InputProviders;
+using TicTacToe.Players;
 
-        public Game() {
-            Board = new Board();
+namespace TicTacToe;
 
-            Players = new Dictionary<Symbol, Player>() {
-                {Symbol.Circle , new HumanPlayer(Symbol.Circle)},
-                {Symbol.Cross , new BotPlayer(Board, Symbol.Cross)},
-            };
+public class Game {
+    private Board Board;
+    private Dictionary<Symbol, Player> Players;
+    private Symbol turn;
 
-            turn = Symbol.Circle;
-        }
+    public Game() {
+        Board = new Board();
+        IInputProvider inputProvider = new ConsoleInputProvider();
 
-        private void SwitchTurn() {
-            turn = turn == Symbol.Circle ? Symbol.Cross : Symbol.Circle;
-        }
+        Players = new Dictionary<Symbol, Player>() {
+            {Symbol.Circle , new HumanPlayer(Symbol.Circle, inputProvider)},
+            {Symbol.Cross , new BotPlayer(Board, Symbol.Cross)},
+        };
 
-        public void Play() {
-            bool playAgain = true;
+        turn = Symbol.Circle;
+    }
+    public Game(Dictionary<Symbol, Player> Players) {
+        Board = new Board();
+        this.Players = Players;
+        turn = Symbol.Circle;
+    }
 
-            while(playAgain) { // New game
-                Board.DisplayBoard();
+    private void SwitchTurn() {
+        turn = turn == Symbol.Circle ? Symbol.Cross : Symbol.Circle;
+    }
 
-                GameState gameState = Board.GetGameState();
-                while(gameState == GameState.InProgress) { // Game not over (next move)
-                    bool movePlayed = false;
-                    while(!movePlayed) { // Move not valid (ask again)
-                        short[] nextMove = Players[turn].GetNextMove();
-                        movePlayed = Board.PlayMove(nextMove[0], nextMove[1], Players[turn].Symbol);
-                    }
+    public GameState Play() {
+        Board.DisplayBoard();
 
-                    SwitchTurn();
-                    Board.DisplayBoard();
-
-                    gameState = Board.GetGameState();
-                }
-
-                Console.Write("Game over, ");
-                switch(gameState) {
-                    case GameState.CircleWins:
-                        Console.WriteLine("circle wins !");
-                        break;
-                    case GameState.CrossWins:
-                        Console.WriteLine("cross wins !");
-                        break;
-                    case GameState.Draw:
-                        Console.WriteLine("it's a draw !");
-                        break;
-                }
-
-                Board.InitBoard();
+        GameState gameState = Board.GetGameState();
+        while(gameState == GameState.InProgress) {
+            short[] nextMove = Players[turn].GetNextMove();
+            if(!Board.PlayMove(nextMove[0], nextMove[1], Players[turn].Symbol)) {
+                continue;
             }
+
+            SwitchTurn();
+            Board.DisplayBoard();
+
+            gameState = Board.GetGameState();
         }
+
+        Console.Write("Game over, ");
+        switch(gameState) {
+            case GameState.CircleWins:
+                Console.WriteLine("circle wins !");
+                break;
+            case GameState.CrossWins:
+                Console.WriteLine("cross wins !");
+                break;
+            case GameState.Draw:
+                Console.WriteLine("it's a draw !");
+                break;
+        }
+
+        return Board.GetGameState();
     }
 }
