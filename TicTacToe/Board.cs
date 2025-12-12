@@ -3,7 +3,7 @@
 namespace TicTacToe;
 
 public class Board {
-    private Symbol[,] Cells { get; set; }
+    public Symbol[,] Cells { get; private set; }
     private const short BOARD_SIZE = 3; // Win conditions are only designed for 3*3 Cells
 
     public Board() {
@@ -90,7 +90,7 @@ public class Board {
     }
 
     public List<short[]> GetEmptyCells() {
-        List<short[]> EmptyCells = new();
+        List<short[]> EmptyCells = [];
 
         for(short i = 0; i < BOARD_SIZE; i++) {
             for(short j = 0; j < BOARD_SIZE; j++) {
@@ -99,5 +99,13 @@ public class Board {
         }
 
         return EmptyCells;
+    }
+
+    public Board Clone() {
+        Board copy = new();
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 3; j++)
+                copy.Cells[i, j] = this.Cells[i, j];
+        return copy;
     }
 }
