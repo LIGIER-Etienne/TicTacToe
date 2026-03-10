@@ -1,15 +1,20 @@
-﻿using TicTacToe.Enums;
+﻿using TicTacToe.Data;
+using TicTacToe.Enums;
 using TicTacToe.InputProviders;
+using TicTacToe.Models;
 using TicTacToe.Players;
 
 namespace TicTacToe;
 
 public class Game {
+    private readonly GameDbContext DbContext;
     private Board Board;
     private Dictionary<Symbol, Player> Players;
     private Symbol turn;
 
-    public Game() {
+    public Game(GameDbContext dbContext) {
+        DbContext = dbContext;
+
         Board = new Board();
         IInputProvider inputProvider = new ConsoleInputProvider();
 
@@ -20,7 +25,9 @@ public class Game {
 
         turn = Symbol.Circle;
     }
-    public Game(Dictionary<Symbol, Player> Players) {
+    public Game(GameDbContext dbContext, Dictionary<Symbol, Player> Players) {
+        DbContext = dbContext;
+
         Board = new Board();
         this.Players = Players;
         turn = Symbol.Circle;
@@ -42,6 +49,7 @@ public class Game {
 
             SwitchTurn();
             Board.DisplayBoard();
+            await SaveGame();
 
             gameState = Board.GetGameState();
         }
@@ -60,5 +68,17 @@ public class Game {
         }
 
         return Board.GetGameState();
+    }
+
+    private async Task SaveGame() {
+        DbGame game = new DbGame {
+            PlayedAt = DateTime.Now,
+            Board = this.Board.Cells,
+            GameState = this.Board.GetGameState(),
+            Turn = this.turn
+        };
+
+        DbContext.Games.Add(game);
+        await DbContext.SaveChangesAsync();
     }
 }

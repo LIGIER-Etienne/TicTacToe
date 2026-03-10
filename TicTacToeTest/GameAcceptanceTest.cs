@@ -36,7 +36,7 @@ public class GameAcceptanceTest {
             {Symbol.Cross , new HumanPlayer(Symbol.Cross, crossInputProvider)},
         };
 
-        Game game = new(Players);
+        Game game = new(null, Players); // TODO : inject dbContext instead of null
 
         Assert.Equal(result, await game.Play());
     }
